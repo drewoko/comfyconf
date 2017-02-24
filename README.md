@@ -1,4 +1,4 @@
-#ComfyConf
+#ComfyConf [![Build Status](https://travis-ci.org/drewoko/comfyconf.svg?branch=master)](https://travis-ci.org/drewoko/comfyconf)
 
 Yet another configuration framework for GO, inspired by different existing frameworks and with additional 
 functionality, like parsing arrays, parameter existence and structure assembly. 
