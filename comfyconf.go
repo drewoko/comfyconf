@@ -1,9 +1,9 @@
 package comfyconf
 
 import (
+	"bytes"
 	"fmt"
 	"reflect"
-	"bytes"
 )
 
 const tagName string = "comfyname"
@@ -36,7 +36,7 @@ func (c *Conf) Parse() (err error) {
 			var isOk bool
 			var r interface{}
 
-			switch opt.optionType {
+			switch opt.GetOptionType() {
 			case stringType:
 				r, isOk = m.ParseString(optKey.shortName, optKey.fullName)
 			case boolType:
@@ -122,8 +122,21 @@ func (c *Conf) isCorrectTypePointer(kind reflect.Kind, field reflect.Value, vari
 }
 
 func (c *Conf) isValKindAllowed(optType OptionType, kind reflect.Kind) bool {
-	return optType == sliceType && kind == reflect.Slice || (optType == boolType || optType == existenceType) && kind == reflect.Bool ||
-		optType == intType && kind == reflect.Int || optType == stringType && kind == reflect.String
+	switch {
+	// slice
+	case optType == sliceType && kind == reflect.Slice:
+		fallthrough
+	// bool
+	case (optType == boolType || optType == existenceType) && kind == reflect.Bool:
+		fallthrough
+	// int
+	case optType == intType && kind == reflect.Int:
+		fallthrough
+	// String
+	case optType == stringType && kind == reflect.String:
+		return true
+	}
+	return false
 }
 
 func (c *Conf) prepare() error {
@@ -237,7 +250,7 @@ func DefaultHelpPrinter(options map[OptionKey]*Option) {
 	buffer.WriteString("  Options: \n")
 
 	for def, opt := range options {
-		buffer.WriteString("    -" + def.GetShort() + ", --" + def.GetFull() + "   "+ opt.description + "\n")
+		buffer.WriteString("    -" + def.GetShort() + ", --" + def.GetFull() + "   " + opt.description + "\n")
 	}
 
 	fmt.Println(buffer.String())

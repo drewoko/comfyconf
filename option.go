@@ -41,63 +41,33 @@ func (o *Option) GetDefaultValue() interface{} {
 
 //Put binds value to variable
 func (o *Option) Put(value interface{}) {
+	if o.isOptionType(value) {
+		switch value.(type) {
+		case string:
+			*o.variable.(*string) = value.(string)
+		case int:
+			*o.variable.(*int) = value.(int)
+		case bool:
+			*o.variable.(*bool) = value.(bool)
+		case []interface{}:
+			*o.variable.(*[]interface{}) = value.([]interface{})
+		}
+	}
+}
+
+func (o *Option) isOptionType(value interface{}) bool {
 	switch value.(type) {
 	case string:
-		o.putString(value)
+		return o.optionType == stringType
 	case int:
-		o.putInt(value)
+		return o.optionType == intType
 	case bool:
-		o.putBool(value)
+		return o.optionType == boolType || o.optionType == existenceType
 	case []interface{}:
-		o.putSlice(value)
-	}
-}
-
-func (o *Option) putString(value interface{}) {
-	if o.optionType != stringType {
-		return
-	}
-	z, ok := o.variable.(*string)
-	if !ok {
-		return
+		return o.optionType == sliceType
 	}
 
-	*z = value.(string)
-}
-
-func (o *Option) putInt(value interface{}) {
-	if o.optionType != intType {
-		return
-	}
-	z, ok := o.variable.(*int)
-	if !ok {
-		return
-	}
-	*z = value.(int)
-}
-
-func (o *Option) putBool(value interface{}) {
-	if o.optionType != boolType && o.optionType != existenceType {
-		return
-	}
-	z, ok := o.variable.(*bool)
-	if !ok {
-		return
-	}
-
-	*z = value.(bool)
-}
-
-func (o *Option) putSlice(value interface{}) {
-	if o.optionType != sliceType {
-		return
-	}
-	z, ok := o.variable.(*[]interface{})
-	if !ok {
-		return
-	}
-
-	*z = value.([]interface{})
+	return false
 }
 
 //OptionType type of variable
