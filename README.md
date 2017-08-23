@@ -1,4 +1,4 @@
-#ComfyConf [![Build Status](https://travis-ci.org/drewoko/comfyconf.svg?branch=master)](https://travis-ci.org/drewoko/comfyconf) [![Coverage Status](https://coveralls.io/repos/github/drewoko/comfyconf/badge.svg?branch=master)](https://coveralls.io/github/drewoko/comfyconf?branch=master)
+# ComfyConf [![Build Status](https://travis-ci.org/drewoko/comfyconf.svg?branch=master)](https://travis-ci.org/drewoko/comfyconf) [![Coverage Status](https://coveralls.io/repos/github/drewoko/comfyconf/badge.svg?branch=master)](https://coveralls.io/github/drewoko/comfyconf?branch=master)
 
 Yet another configuration framework for GO, inspired by different existing frameworks and with additional 
 functionality, like parsing arrays, parameter existence and structure assembly. 
